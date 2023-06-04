@@ -1,6 +1,5 @@
-import { FC } from 'react';
-import { StyleSheet, Image, View, ImageSourcePropType } from 'react-native';
-
+import { FC } from 'react'
+import { StyleSheet, Image, View, ImageSourcePropType } from 'react-native'
 
 interface ImageViewerProps {
   placeholderImage?: ImageSourcePropType
@@ -20,11 +19,11 @@ export const ImageViewer: FC<ImageViewerProps> = ({ placeholderImage, selectedIm
 }
 
 const styles = StyleSheet.create({
-   imageContainer: {
+  imageContainer: {
     flex: 1,
     paddingTop: 58,
   },
-    image: {
+  image: {
     width: 320,
     height: 440,
     borderRadius: 18,
