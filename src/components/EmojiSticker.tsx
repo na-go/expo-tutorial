@@ -1,9 +1,9 @@
-import { FC } from 'react';
-import { View, Image } from 'react-native';
+import { FC } from 'react'
+import { View, Image } from 'react-native'
 
 interface EmojiStickerProps {
-  imageSize: number;
-  stickerSource: any;
+  imageSize: number
+  stickerSource: any
 }
 
 export const EmojiSticker: FC<EmojiStickerProps> = ({ imageSize, stickerSource }) => {
@@ -15,5 +15,5 @@ export const EmojiSticker: FC<EmojiStickerProps> = ({ imageSize, stickerSource }
         style={{ width: imageSize, height: imageSize }}
       />
     </View>
-  );
+  )
 }

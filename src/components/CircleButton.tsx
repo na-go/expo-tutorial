@@ -1,19 +1,19 @@
-import { View, Pressable, StyleSheet } from 'react-native';
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import { FC } from 'react';
+import { View, Pressable, StyleSheet } from 'react-native'
+import MaterialIcons from '@expo/vector-icons/MaterialIcons'
+import { FC } from 'react'
 
 interface CircleButtonProps {
-  onPress?: () => void;
+  onPress?: () => void
 }
 
-export const CircleButton:FC<CircleButtonProps> = ({ onPress }) => {
+export const CircleButton: FC<CircleButtonProps> = ({ onPress }) => {
   return (
     <View style={styles.circleButtonContainer}>
       <Pressable style={styles.circleButton} onPress={onPress}>
         <MaterialIcons name="add" size={38} color="#25292e" />
       </Pressable>
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -33,4 +33,4 @@ const styles = StyleSheet.create({
     borderRadius: 42,
     backgroundColor: '#fff',
   },
-});
+})

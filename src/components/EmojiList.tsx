@@ -1,12 +1,12 @@
-import { FC, useState } from 'react';
-import { StyleSheet, FlatList, Image, Platform, Pressable } from 'react-native';
+import { FC, useState } from 'react'
+import { StyleSheet, FlatList, Image, Platform, Pressable } from 'react-native'
 
 interface EmojiListProps {
-  onSelect: (item: any) => void;
-  onCloseModal: () => void;
+  onSelect: (item: any) => void
+  onCloseModal: () => void
 }
 
-export const EmojiList:FC<EmojiListProps> = ({ onSelect, onCloseModal }) => {
+export const EmojiList: FC<EmojiListProps> = ({ onSelect, onCloseModal }) => {
   const [emoji] = useState([
     require('../assets/images/emoji1.png'),
     require('../assets/images/emoji2.png'),
@@ -14,7 +14,7 @@ export const EmojiList:FC<EmojiListProps> = ({ onSelect, onCloseModal }) => {
     require('../assets/images/emoji4.png'),
     require('../assets/images/emoji5.png'),
     require('../assets/images/emoji6.png'),
-  ]);
+  ])
 
   return (
     <FlatList
@@ -26,15 +26,16 @@ export const EmojiList:FC<EmojiListProps> = ({ onSelect, onCloseModal }) => {
         return (
           <Pressable
             onPress={() => {
-              onSelect(item);
-              onCloseModal();
-            }}>
+              onSelect(item)
+              onCloseModal()
+            }}
+          >
             <Image source={item} key={index} style={styles.image} />
           </Pressable>
-        );
+        )
       }}
     />
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -51,4 +52,4 @@ const styles = StyleSheet.create({
     height: 100,
     marginRight: 20,
   },
-});
+})
