@@ -1,8 +1,5 @@
-import { registerRootComponent } from 'expo'
 import { StatusBar } from 'expo-status-bar'
 import { StyleSheet, View, Image, ImageURISource, Platform } from 'react-native'
-import * as ImagePicker from 'expo-image-picker'
-import * as MediaLibrary from 'expo-media-library'
 import { captureRef } from 'react-native-view-shot';
 import domtoimage from 'dom-to-image';
 import { FC, memo, useRef, useState } from 'react'
@@ -14,17 +11,19 @@ import {
   IconButton,
   EmojiSticker,
 } from './components'
+import { saveToLibraryAsync, usePermissions } from 'expo-media-library';
+import { launchImageLibraryAsync } from 'expo-image-picker';
 
 const PlaceholderImage: ImageURISource = require('./assets/images/background-image.png')
 
 export const TopPage: FC = () => {
-  const [status, requestPermission] = MediaLibrary.usePermissions()
+  const [status, requestPermission] = usePermissions()
 
   if (status === null) {
     requestPermission()
   }
 
-  const imageRef = useRef<null>(null)
+  const imageRef = useRef(null)
 
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [showAppOptions, setShowAppOptions] = useState(false)
@@ -35,7 +34,7 @@ export const TopPage: FC = () => {
   const source = selectedImage ? { uri: selectedImage } : PlaceholderImage
 
   const pickImageAsync = async () => {
-    const result = await ImagePicker.launchImageLibraryAsync({
+    const result = await launchImageLibraryAsync({
       allowsEditing: true,
       quality: 1,
     })
@@ -70,7 +69,7 @@ export const TopPage: FC = () => {
           height: 440,
           quality: 1,
         });
-        await MediaLibrary.saveToLibraryAsync(localUri);
+        await saveToLibraryAsync(localUri);
         if (localUri) {
           alert('Saved!');
         }
