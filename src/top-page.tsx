@@ -2,7 +2,9 @@ import { registerRootComponent } from 'expo'
 import { StatusBar } from 'expo-status-bar'
 import { StyleSheet, View, Image, ImageURISource } from 'react-native'
 import * as ImagePicker from 'expo-image-picker'
-import { FC, memo, useState } from 'react'
+import * as MediaLibrary from 'expo-media-library'
+import { captureRef } from 'react-native-view-shot';
+import { FC, memo, useRef, useState } from 'react'
 import {
   Button,
   EmojiList,
@@ -15,6 +17,14 @@ import {
 const PlaceholderImage: ImageURISource = require('./assets/images/background-image.png')
 
 export const TopPage: FC = () => {
+  const [status, requestPermission] = MediaLibrary.usePermissions()
+
+  if (status === null) {
+    requestPermission()
+  }
+
+  const imageRef = useRef(null)
+
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [showAppOptions, setShowAppOptions] = useState(false)
   const [pickedEmoji, setPickedEmoji] = useState(null)
@@ -53,14 +63,28 @@ export const TopPage: FC = () => {
   }
 
   const onSaveImageAsync = async () => {
-    // we will implement this later
+    try {
+      const localUri = await captureRef(imageRef, {
+        height: 440,
+        quality: 1,
+      });
+
+      await MediaLibrary.saveToLibraryAsync(localUri);
+      if (localUri) {
+        alert("画像を保存しました");
+      }
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   return (
     <>
       <View style={styles.imageContainer}>
-        <Image source={source} style={styles.image} />
-        {pickedEmoji !== null ? <EmojiSticker imageSize={40} stickerSource={pickedEmoji} /> : null}
+        <View ref={imageRef} collapsable={false}>
+          <Image source={source} style={styles.image} />
+          {pickedEmoji !== null ? <EmojiSticker imageSize={40} stickerSource={pickedEmoji} /> : null}
+        </View>
       </View>
       {showAppOptions ? (
         <View style={styles.optionsContainer}>
