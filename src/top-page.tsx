@@ -1,9 +1,10 @@
 import { registerRootComponent } from 'expo'
 import { StatusBar } from 'expo-status-bar'
-import { StyleSheet, View, Image, ImageURISource } from 'react-native'
+import { StyleSheet, View, Image, ImageURISource, Platform } from 'react-native'
 import * as ImagePicker from 'expo-image-picker'
 import * as MediaLibrary from 'expo-media-library'
 import { captureRef } from 'react-native-view-shot';
+import domtoimage from 'dom-to-image';
 import { FC, memo, useRef, useState } from 'react'
 import {
   Button,
@@ -23,7 +24,7 @@ export const TopPage: FC = () => {
     requestPermission()
   }
 
-  const imageRef = useRef(null)
+  const imageRef = useRef<null>(null)
 
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [showAppOptions, setShowAppOptions] = useState(false)
@@ -63,18 +64,35 @@ export const TopPage: FC = () => {
   }
 
   const onSaveImageAsync = async () => {
-    try {
-      const localUri = await captureRef(imageRef, {
-        height: 440,
-        quality: 1,
-      });
-
-      await MediaLibrary.saveToLibraryAsync(localUri);
-      if (localUri) {
-        alert("画像を保存しました");
+    if (Platform.OS !== 'web') {
+      try {
+        const localUri = await captureRef(imageRef, {
+          height: 440,
+          quality: 1,
+        });
+        await MediaLibrary.saveToLibraryAsync(localUri);
+        if (localUri) {
+          alert('Saved!');
+        }
+      } catch (e) {
+        console.log(e);
       }
-    } catch (e) {
-      console.log(e);
+    } else {
+      try {
+        if (!imageRef.current) return null;
+        const dataUrl = await domtoimage.toJpeg(imageRef.current, {
+          quality: 0.95,
+          width: 320,
+          height: 440,
+        });
+
+        let link = document.createElement('a');
+        link.download = 'sticker-smash.jpeg';
+        link.href = dataUrl;
+        link.click();
+      } catch (e) {
+        console.log(e);
+      }
     }
   }
 
